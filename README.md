@@ -43,7 +43,7 @@ nohup python3 /full/path/to/break_notifier.py > output.log 2>&1 &
 3. Stop the Script (When Needed)
 Find the process:
 ```
-ps aux | grep break_notifier.py
+ps aux | grep script.py
 
 ```
 Then stop it:
@@ -77,3 +77,49 @@ break-notifier/
 
 # 🎯 Why I Built This
 As someone who cares about sustainable productivity and building simple automation tools, I created this script to support healthy work rhythms. It’s also a small demonstration of background scheduling and native macOS notification integration with Python.
+
+# 🔔 Sound Notifications
+By default, this script plays a sound along with the desktop notification using macOS's built-in `afplay` command. This helps you not miss your break — even if you're not looking at the screen.
+
+### 🔉 Changing the Sound
+macOS comes with several built-in system sounds located in:
+```
+/System/Library/Sounds
+```
+To see available sounds, run this command in y our terminal:
+```
+ls /System/Library/Sounds
+```
+You'll get a list like:
+```
+Basso.aiff  Blow.aiff  Funk.aiff  Ping.aiff  Submarine.aiff  Tink.aiff  ...
+
+```
+
+### ▶️ Test-Playing a Sound
+To preview a sound in your terminal:
+```
+afplay /System/Library/Sounds/Pop.aiff
+
+```
+Replace `Pop.aiff` with any other file from the list.
+
+### 🔁 Play All Sounds (One by One)
+Use this command (paste it in your terminal) to play each system sound with a short pause between:
+```
+for sound in /System/Library/Sounds/*.aiff; do
+  echo "Playing: $(basename "$sound")"
+  afplay "$sound"
+  sleep 1
+done
+```
+
+### 🎯 Changing the Sound in Code
+In your break_notifier.py, locate the play_sound() function and update the file path:
+```
+def play_start_sound():
+    subprocess.run(["afplay", "/System/Library/Sounds/Submarine.aiff"])
+
+def play_end_sound():
+    subprocess.run(["afplay", "/System/Library/Sounds/Pop.aiff"])
+```
