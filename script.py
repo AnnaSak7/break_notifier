@@ -31,15 +31,15 @@ def schedule_break_cycle():
     scheduler.add_job(
         notify_break_end,
         trigger="date",
-        run_date=datetime.now() + timedelta(minutes=1)
+        run_date=datetime.now() + timedelta(minutes=10)
     )
 
 scheduler = BlockingScheduler()
 scheduler.add_job(
     schedule_break_cycle,
     "interval",
-    minutes=2,
-    next_run_time=datetime.now() + timedelta(minutes=1),
+    minutes=60,
+    next_run_time=datetime.now() + timedelta(minutes=50),
     id="break_notification_job"
 ) 
 
